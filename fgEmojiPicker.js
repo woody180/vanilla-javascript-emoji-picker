@@ -31,8 +31,6 @@ const FgEmojiPicker = {
     variable: {
         position: null,
         dir: '',
-        mousePosition: {x: 0, y: 0},
-        offset: [0, 0]
     },
 
     selectors: {
@@ -211,14 +209,6 @@ const FgEmojiPicker = {
             // Bounding rect
             // Trigger position and (trigger) sizes
             let el = e.target.closest(this.selectors.trigger)
-            let rect = el.getBoundingClientRect();
-            let pos = {left: rect.left, top: rect.top,
-                      width: rect.width, height: rect.height}
-
-
-            this.variable.mousePosition.x = e.clientX;
-            this.variable.mousePosition.y = e.clientY;
-
 
             // Emoji Picker Promise
             this.emojiPicker().then(emojiPicker => {
@@ -230,26 +220,62 @@ const FgEmojiPicker = {
                 const emojiFooter = emojiPickerMain.querySelector('.fg-emoji-picker-footer');
                 const emojiBody = emojiPickerMain.querySelector('.fg-emoji-picker-all-categories')
 
-                console.log(e.clientY + window.innerHeight);
+
+                let positions = {
+                    buttonTop:              e.pageY,
+                    buttonWidth:            el.offsetWidth,
+                    buttonFromLeft:         el.getBoundingClientRect().left,
+                    bodyHeight:             document.body.offsetHeight,
+                    bodyWidth:              document.body.offsetWidth,
+                    windowScrollPosition:   window.pageYOffset,
+                    emojiHeight:            emojiPickerMain.offsetHeight,
+                    emojiWidth:             emojiPickerMain.offsetWidth,
+                }
+
+
+            
+                // // Top / left
+                // emojiPickerMain.style.top = positions.buttonTop - positions.emojiHeight + 'px';
+                // emojiPickerMain.style.left = positions.buttonFromLeft - positions.emojiWidth + 'px';
+            
+                
+                // // Bottom / left
+                // emojiPickerMain.style.top = positions.buttonTop  + 'px';
+                // emojiPickerMain.style.left = positions.bodyWidth - positions.buttonWidth - positions.emojiWidth + 'px';  
+            
+                
+                // // bottom / right
+                // emojiPickerMain.style.top = positions.buttonTop  + 'px';
+                // emojiPickerMain.style.left = positions.buttonFromLeft + positions.buttonWidth  + 'px';
+
+                // // top / right
+                // emojiPickerMain.style.top = positions.buttonTop - positions.emojiHeight + 'px';
+                // emojiPickerMain.style.left = positions.buttonFromLeft + positions.buttonWidth  + 'px';
+                
+     
+                
                 // Element position object
                 let position = {
-                    top: this.variable.offset[1] + el.offsetHeight,
-                    left: pos.left - emojiPickerMain.offsetWidth,
-                    bottom: window.innerHeight - (((emojiPickerMain.offsetHeight * 2) + 40) + el.offsetHeight),
-                    right: window.innerWidth - ((emojiPickerMain.offsetWidth + 20) + el.offsetWidth)
+                    top: emojiPickerMain.style.top = positions.buttonTop - positions.emojiHeight,
+                    left: emojiPickerMain.style.left = positions.buttonFromLeft - positions.emojiWidth,
+                    bottom: emojiPickerMain.style.top = positions.buttonTop,
+                    right: emojiPickerMain.style.left = positions.buttonFromLeft + positions.buttonWidth
                 }
 
 
                 // Positioning emoji container top
                 if (this.variable.position) {
                     this.variable.position.forEach(elemPos => {
-                        emojiPickerMain.style[elemPos] = position[elemPos]+'px';
-                    })
-                } else {
-                    emojiPickerMain.style.left = (pos.left + pos.width)+'px';
-                    emojiPickerMain.style.top = (pos.top + pos.height)+'px';
-                }
 
+                        if (elemPos === 'right') {
+                            emojiPickerMain.style.left = position[elemPos]+'px';
+                        } else if (elemPos === 'bottom') {
+                            emojiPickerMain.style.top = position[elemPos]+'px';
+                        } else {
+                            emojiPickerMain.style[elemPos] = position[elemPos]+'px';
+                        }
+                    })
+                }
 
 
 
