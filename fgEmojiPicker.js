@@ -284,6 +284,19 @@ const FgEmojiPicker = {
 
                     e.preventDefault();
 
+                    let scrollTo = (element, to, duration = 100) => {
+
+                        if (duration <= 0) return;
+                        var difference = to - element.scrollTop;
+                        var perTick = difference / duration * 10;
+                    
+                        setTimeout(function() {
+                            element.scrollTop = element.scrollTop + perTick;
+                            if (element.scrollTop === to) return;
+                            scrollTo(element, to, duration - 10);
+                        }, 10);
+                    }
+
                     const el = e.target;
                     const filterLlnk = el.closest('a');
 
@@ -294,9 +307,10 @@ const FgEmojiPicker = {
                         let list = filterLlnk.closest('li')
                         list.classList.add('active');
                         let listIndex = list.getAttribute('data-index');
-                        emojiBody.querySelector(`#${listIndex}`).scrollIntoView({
-                            // behavior: "smooth"
-                        });
+
+                        console.log(emojiBody)
+                        
+                        scrollTo(emojiBody, emojiBody.querySelector(`#${listIndex}`).offsetTop);
                     }
 
 
