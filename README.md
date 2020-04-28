@@ -1,5 +1,7 @@
 # Emoji picker created with vanilla javascript
 
+![](emoji-picker-thumb.jpg)
+
 ## Installation & Usage
 
 1. Put fgEmojiPicker.js file along with full-emoji-list.json in the same directory.
