@@ -31,6 +31,8 @@ const FgEmojiPicker = {
     variable: {
         position: null,
         dir: '',
+        mousePosition: {x: 0, y: 0},
+        offset: [0, 0]
     },
 
     selectors: {
@@ -53,7 +55,8 @@ const FgEmojiPicker = {
             document.head.insertAdjacentHTML('beforeend', `
                 <style>
                 .fg-emoji-picker {
-                    position: fixed;
+                    /* position: fixed; */
+                    position: absolute;
                     z-index: 999;
                     width: 300px;
                     min-height: 360px;
@@ -213,6 +216,9 @@ const FgEmojiPicker = {
                       width: rect.width, height: rect.height}
 
 
+            this.variable.mousePosition.x = e.clientX;
+            this.variable.mousePosition.y = e.clientY;
+
 
             // Emoji Picker Promise
             this.emojiPicker().then(emojiPicker => {
@@ -224,12 +230,13 @@ const FgEmojiPicker = {
                 const emojiFooter = emojiPickerMain.querySelector('.fg-emoji-picker-footer');
                 const emojiBody = emojiPickerMain.querySelector('.fg-emoji-picker-all-categories')
 
+                console.log(e.clientY + window.innerHeight);
                 // Element position object
                 let position = {
-                    top: pos.top - emojiPickerMain.offsetHeight,
+                    top: this.variable.offset[1] + el.offsetHeight,
                     left: pos.left - emojiPickerMain.offsetWidth,
-                    bottom: (window.innerHeight - pos.top) - (emojiPickerMain.offsetHeight + pos.height),
-                    right: (window.innerWidth - pos.left) - (emojiPickerMain.offsetWidth + pos.width)
+                    bottom: window.innerHeight - (((emojiPickerMain.offsetHeight * 2) + 40) + el.offsetHeight),
+                    right: window.innerWidth - ((emojiPickerMain.offsetWidth + 20) + el.offsetWidth)
                 }
 
 
