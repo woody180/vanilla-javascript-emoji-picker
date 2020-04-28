@@ -307,8 +307,6 @@ const FgEmojiPicker = {
                         let list = filterLlnk.closest('li')
                         list.classList.add('active');
                         let listIndex = list.getAttribute('data-index');
-
-                        console.log(emojiBody)
                         
                         scrollTo(emojiBody, emojiBody.querySelector(`#${listIndex}`).offsetTop);
                     }
