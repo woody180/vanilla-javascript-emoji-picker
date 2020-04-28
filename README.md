@@ -19,3 +19,13 @@ FgEmojiPicker.init({
 *  trigger: 'selector'
 *  position: ['top', 'left', 'right', 'bottom']
 *  emit: (emoji) {console.log(emoji)}
+
+```
+FgEmojiPicker.init({
+    trigger: 'button',
+    position: ['bottom', 'right'],
+    emit(emoji) {
+        console.log(emoji);
+    }
+});
+```
