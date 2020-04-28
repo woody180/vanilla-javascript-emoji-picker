@@ -4,6 +4,7 @@
 FgEmojiPicker.init({
     trigger: 'button',
     position: ['bottom', 'right'],
+    dir: 'directory/to/json', (without json name)
     emit(emoji) {
         console.log(emoji);
     }
@@ -20,6 +21,7 @@ const FgEmojiPicker = {
         this.selectors.trigger = arguments[0].trigger || console.error('You must proved trigger element like this - \'EmojiPicker.init({trigger: "selector"})\' ');
         this.varables.emit = arguments[0].emit || null;
         this.varables.position = arguments[0].position || null;
+        this.varables.dir = arguments[0].dir || null;
         if (!this.selectors.trigger) return;
 
         this.catchDOM();
@@ -27,7 +29,8 @@ const FgEmojiPicker = {
     },
 
     varables: {
-        position: null
+        position: null,
+        dir: '',
     },
 
     selectors: {
@@ -297,7 +300,7 @@ const FgEmojiPicker = {
         let outerUl = '<div class="fg-emoji-picker-all-categories">%outerUL%</div>';
         let innerLists = ``;
 
-        const fetchData = fetch('full-emoji-list.json')
+        const fetchData = fetch(this.varables.dir+'full-emoji-list.json')
         .then(response => response.json())
         .then(object => {
 

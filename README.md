@@ -20,12 +20,14 @@ FgEmojiPicker.init({
 
 *  trigger: 'selector'
 *  position: ['top', 'left', 'right', 'bottom']
+*  dir: 'directory/to/json', (without json name)
 *  emit: (emoji) {console.log(emoji)}
 
 ```
 FgEmojiPicker.init({
     trigger: 'button',
     position: ['bottom', 'right'],
+    dir: '', (without json name),
     emit(emoji) {
         console.log(emoji);
     }
