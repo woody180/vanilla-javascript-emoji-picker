@@ -19,16 +19,16 @@ const FgEmojiPicker = {
         this.functions.generateStyle();
 
         this.selectors.trigger = arguments[0].trigger || console.error('You must proved trigger element like this - \'EmojiPicker.init({trigger: "selector"})\' ');
-        this.varables.emit = arguments[0].emit || null;
-        this.varables.position = arguments[0].position || null;
-        this.varables.dir = arguments[0].dir || null;
+        this.variable.emit = arguments[0].emit || null;
+        this.variable.position = arguments[0].position || null;
+        this.variable.dir = arguments[0].dir || '';
         if (!this.selectors.trigger) return;
 
         this.catchDOM();
         this.bindEvents();
     },
 
-    varables: {
+    variable: {
         position: null,
         dir: '',
     },
@@ -191,7 +191,7 @@ const FgEmojiPicker = {
                     emoji: el.getAttribute('href'),
                     code: el.getAttribute('data-code')
                 }
-                this.varables.emit(emoji)
+                this.variable.emit(emoji)
 
                 const picker = document.querySelector('.fg-emoji-picker');
                 picker.remove();
@@ -234,8 +234,8 @@ const FgEmojiPicker = {
 
 
                 // Positioning emoji container top
-                if (this.varables.position) {
-                    this.varables.position.forEach(elemPos => {
+                if (this.variable.position) {
+                    this.variable.position.forEach(elemPos => {
                         emojiPickerMain.style[elemPos] = position[elemPos]+'px';
                     })
                 } else {
@@ -300,7 +300,7 @@ const FgEmojiPicker = {
         let outerUl = '<div class="fg-emoji-picker-all-categories">%outerUL%</div>';
         let innerLists = ``;
 
-        const fetchData = fetch(this.varables.dir+'full-emoji-list.json')
+        const fetchData = fetch(`${this.variable.dir}full-emoji-list.json`)
         .then(response => response.json())
         .then(object => {
 
