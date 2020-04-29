@@ -4,7 +4,7 @@
 
 ## Installation & Usage
 
-1. Put fgEmojiPicker.js file along with full-emoji-list.json in the same directory.
+1. Put fgEmojiPicker.js file along with full-emoji-list.json.
 
 2. Include fgEmojiPicker.js inside the head or body of the project
 
@@ -21,14 +21,16 @@ FgEmojiPicker.init({
 *  trigger: 'selector'
 *  position: ['top', 'left', 'right', 'bottom']
 *  dir: 'directory/to/json', (without json name)
-*  emit: (emoji) {console.log(emoji)}
+*  emit: (emoji, triggerElement) {console.log(emoji)}
+
+emit() collback returns two argumens. First is emoji it self and second is the trigger element.
 
 ```
 FgEmojiPicker.init({
     trigger: 'button',
     position: ['bottom', 'right'],
     dir: 'directory/to/json', (without json name),
-    emit(emoji) {
+    emit(emoji, triggerElement) {
         console.log(emoji);
     }
 });
