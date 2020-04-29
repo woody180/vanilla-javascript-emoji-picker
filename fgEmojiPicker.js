@@ -45,7 +45,7 @@ const FgEmojiPicker = {
     bindEvents() {
         document.body.addEventListener('click', this.functions.removeEmojiPicker.bind(this));
         document.body.addEventListener('click', this.functions.emitEmoji.bind(this));
-        this.trigger.forEach(item => item.addEventListener('click', this.functions.openEmojiSelector.bind(this)));
+        document.body.addEventListener('click', this.functions.openEmojiSelector.bind(this), this.selectors.trigger);
     },
 
     functions: {
@@ -205,119 +205,101 @@ const FgEmojiPicker = {
         // Open omoji picker
         openEmojiSelector(e) {
 
-            e.preventDefault();
-
-            // Bounding rect
-            // Trigger position and (trigger) sizes
             let el = e.target.closest(this.selectors.trigger)
+            if (el) {
+                e.preventDefault();
 
-            if (typeof this.variable.emit === 'function') this.triggerer = el
+                // Bounding rect
+                // Trigger position and (trigger) sizes
+                let el = e.target.closest(this.selectors.trigger)
 
-            // Emoji Picker Promise
-            this.emojiPicker().then(emojiPicker => {
+                if (typeof this.variable.emit === 'function') this.triggerer = el
 
-                // Insert picker
-                document.body.insertAdjacentHTML('afterbegin', emojiPicker);
+                // Emoji Picker Promise
+                this.emojiPicker().then(emojiPicker => {
 
-                const emojiPickerMain = document.querySelector('.fg-emoji-picker');
-                const emojiFooter = emojiPickerMain.querySelector('.fg-emoji-picker-footer');
-                const emojiBody = emojiPickerMain.querySelector('.fg-emoji-picker-all-categories')
+                    // Insert picker
+                    document.body.insertAdjacentHTML('afterbegin', emojiPicker);
 
-
-                let positions = {
-                    buttonTop:              e.pageY,
-                    buttonWidth:            el.offsetWidth,
-                    buttonFromLeft:         el.getBoundingClientRect().left,
-                    bodyHeight:             document.body.offsetHeight,
-                    bodyWidth:              document.body.offsetWidth,
-                    windowScrollPosition:   window.pageYOffset,
-                    emojiHeight:            emojiPickerMain.offsetHeight,
-                    emojiWidth:             emojiPickerMain.offsetWidth,
-                }
+                    const emojiPickerMain = document.querySelector('.fg-emoji-picker');
+                    const emojiFooter = emojiPickerMain.querySelector('.fg-emoji-picker-footer');
+                    const emojiBody = emojiPickerMain.querySelector('.fg-emoji-picker-all-categories')
 
 
-            
-                // // Top / left
-                // emojiPickerMain.style.top = positions.buttonTop - positions.emojiHeight + 'px';
-                // emojiPickerMain.style.left = positions.buttonFromLeft - positions.emojiWidth + 'px';
-            
-                
-                // // Bottom / left
-                // emojiPickerMain.style.top = positions.buttonTop  + 'px';
-                // emojiPickerMain.style.left = positions.bodyWidth - positions.buttonWidth - positions.emojiWidth + 'px';  
-            
-                
-                // // bottom / right
-                // emojiPickerMain.style.top = positions.buttonTop  + 'px';
-                // emojiPickerMain.style.left = positions.buttonFromLeft + positions.buttonWidth  + 'px';
+                    let positions = {
+                        buttonTop:              e.pageY,
+                        buttonWidth:            el.offsetWidth,
+                        buttonFromLeft:         el.getBoundingClientRect().left,
+                        bodyHeight:             document.body.offsetHeight,
+                        bodyWidth:              document.body.offsetWidth,
+                        windowScrollPosition:   window.pageYOffset,
+                        emojiHeight:            emojiPickerMain.offsetHeight,
+                        emojiWidth:             emojiPickerMain.offsetWidth,
+                    }
 
-                // // top / right
-                // emojiPickerMain.style.top = positions.buttonTop - positions.emojiHeight + 'px';
-                // emojiPickerMain.style.left = positions.buttonFromLeft + positions.buttonWidth  + 'px';
-                
-     
-                
-                // Element position object
-                let position = {
-                    top: emojiPickerMain.style.top = positions.buttonTop - positions.emojiHeight,
-                    left: emojiPickerMain.style.left = positions.buttonFromLeft - positions.emojiWidth,
-                    bottom: emojiPickerMain.style.top = positions.buttonTop,
-                    right: emojiPickerMain.style.left = positions.buttonFromLeft + positions.buttonWidth
-                }
-
-
-                // Positioning emoji container top
-                if (this.variable.position) {
-                    this.variable.position.forEach(elemPos => {
-
-                        if (elemPos === 'right') {
-                            emojiPickerMain.style.left = position[elemPos]+'px';
-                        } else if (elemPos === 'bottom') {
-                            emojiPickerMain.style.top = position[elemPos]+'px';
-                        } else {
-                            emojiPickerMain.style[elemPos] = position[elemPos]+'px';
-                        }
-                    })
-                }
-
-
-
-                // Add event listener on click
-                document.body.querySelector('.fg-emoji-picker').onclick =  function(e) {
-
-                    e.preventDefault();
-
-                    let scrollTo = (element, to, duration = 100) => {
-
-                        if (duration <= 0) return;
-                        var difference = to - element.scrollTop;
-                        var perTick = difference / duration * 10;
                     
-                        setTimeout(function() {
-                            element.scrollTop = element.scrollTop + perTick;
-                            if (element.scrollTop === to) return;
-                            scrollTo(element, to, duration - 10);
-                        }, 10);
+                    // Element position object
+                    let position = {
+                        top: emojiPickerMain.style.top = positions.buttonTop - positions.emojiHeight,
+                        left: emojiPickerMain.style.left = positions.buttonFromLeft - positions.emojiWidth,
+                        bottom: emojiPickerMain.style.top = positions.buttonTop,
+                        right: emojiPickerMain.style.left = positions.buttonFromLeft + positions.buttonWidth
                     }
 
-                    const el = e.target;
-                    const filterLlnk = el.closest('a');
 
-                    document.querySelectorAll('.fg-emoji-picker-categories li').forEach(item => item.classList.remove('active'))
+                    // Positioning emoji container top
+                    if (this.variable.position) {
+                        this.variable.position.forEach(elemPos => {
 
-                    if (filterLlnk && filterLlnk.closest('li') && filterLlnk.closest('li').getAttribute('data-index')) {
+                            if (elemPos === 'right') {
+                                emojiPickerMain.style.left = position[elemPos]+'px';
+                            } else if (elemPos === 'bottom') {
+                                emojiPickerMain.style.top = position[elemPos]+'px';
+                            } else {
+                                emojiPickerMain.style[elemPos] = position[elemPos]+'px';
+                            }
+                        })
+                    }
 
-                        let list = filterLlnk.closest('li')
-                        list.classList.add('active');
-                        let listIndex = list.getAttribute('data-index');
+
+
+                    // Add event listener on click
+                    document.body.querySelector('.fg-emoji-picker').onclick =  function(e) {
+
+                        e.preventDefault();
+
+                        let scrollTo = (element, to, duration = 100) => {
+
+                            if (duration <= 0) return;
+                            var difference = to - element.scrollTop;
+                            var perTick = difference / duration * 10;
                         
-                        scrollTo(emojiBody, emojiBody.querySelector(`#${listIndex}`).offsetTop);
+                            setTimeout(function() {
+                                element.scrollTop = element.scrollTop + perTick;
+                                if (element.scrollTop === to) return;
+                                scrollTo(element, to, duration - 10);
+                            }, 10);
+                        }
+
+                        const el = e.target;
+                        const filterLlnk = el.closest('a');
+
+                        document.querySelectorAll('.fg-emoji-picker-categories li').forEach(item => item.classList.remove('active'))
+
+                        if (filterLlnk && filterLlnk.closest('li') && filterLlnk.closest('li').getAttribute('data-index')) {
+
+                            let list = filterLlnk.closest('li')
+                            list.classList.add('active');
+                            let listIndex = list.getAttribute('data-index');
+                            
+                            scrollTo(emojiBody, emojiBody.querySelector(`#${listIndex}`).offsetTop);
+                        }
+
+
                     }
 
-
-                }
-
-            })
+                })
+            }
         }
     },
 
