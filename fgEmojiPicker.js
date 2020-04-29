@@ -34,6 +34,7 @@ const FgEmojiPicker = {
     },
 
     selectors: {
+        emit: null,
         trigger: null
     },
 
@@ -192,7 +193,7 @@ const FgEmojiPicker = {
                     emoji: el.getAttribute('href'),
                     code: el.getAttribute('data-code')
                 }
-                this.variable.emit(emoji)
+                if (this.variable.emit) this.variable.emit(emoji, this.triggerer)
 
                 const picker = document.querySelector('.fg-emoji-picker');
                 picker.remove();
@@ -209,6 +210,8 @@ const FgEmojiPicker = {
             // Bounding rect
             // Trigger position and (trigger) sizes
             let el = e.target.closest(this.selectors.trigger)
+
+            if (typeof this.variable.emit === 'function') this.triggerer = el
 
             // Emoji Picker Promise
             this.emojiPicker().then(emojiPicker => {
