@@ -18,19 +18,20 @@ FgEmojiPicker.init({
 
 ## Options
 
-*  trigger: 'selector'
+*  trigger: 'selector'. Multiple selectors also available. Just put selectors in array - trigger: ['selector-1', 'selector-2', 'selector-3']
 *  position: ['top', 'left', 'right', 'bottom']
 *  dir: 'directory/to/json', (without json name)
 *  emit: (emoji, triggerElement) {console.log(emoji)}
 
 emit() collback returns two argumens. First is emoji it self and second is the trigger element.
 
+
 ```
 FgEmojiPicker.init({
-    trigger: 'button',
+    trigger: 'button', // Using multiple selectors. trigger: ['selector-1', 'selector-2', 'selector-3']
     position: ['bottom', 'right'],
     dir: 'directory/to/json', (without json name),
-    emit(emoji, triggerElement) {
+    emit(obj, triggerElement) {
         console.log(emoji);
     }
 });

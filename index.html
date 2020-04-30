@@ -6,28 +6,53 @@
     
     <style>
         html, body {
-            width: 100%; height: 5000px;
+            width: 100%; height: 100%;
             padding: 0; margin: 0;
+            font-family: sans-serif;
         }
+        
         button {
-            position: relative;
-            top: 1000px;
-            left: 600px;
+            background-color: royalblue;
+            color: white; padding: 10px 17px;
+            outline: none; border: none;
+            border-radius: 3px; cursor: pointer;
         }
+        button:hover { background-color: #5378ea;}
+        button:active { background-color: royalblue;}
+        
+        .container {
+            max-width: 1020px; margin: auto;
+            padding: 20px;
+        }
+        
+        textarea {
+            width: 100%; height: 160px;
+            margin-bottom: 15px; outline: none;
+            border: 2px solid rgb(199, 218, 253);
+            font-size: 20px;
+        }
+
+       
     </style>
 </head>
 <body>
     <div class="container">
-        <button>Click me</button>
+        <textarea></textarea>
+       
+       
+        <button>Pick emoji</button>
     </div>
     
     
     <script src="fgEmojiPicker.js"></script>
     <script>
         FgEmojiPicker.init({
-            trigger: 'button',
-            position: ['top', 'left'],
-            
+            trigger: ['button', 'textarea'],
+            position: ['bottom', 'right'],
+            emit(obj, triggerElement) {
+                const emoji = obj.emoji;
+                document.querySelector('textarea').value += emoji;
+            }
         });
     </script>
 </body>

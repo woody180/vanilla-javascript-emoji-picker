@@ -39,7 +39,7 @@ const FgEmojiPicker = {
     },
 
     catchDOM() {
-        this.trigger = document.querySelectorAll(this.selectors.trigger);
+        // this.trigger = document.querySelectorAll(this.selectors.trigger);
     },
 
     bindEvents() {
