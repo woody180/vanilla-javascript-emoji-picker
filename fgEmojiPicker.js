@@ -60,8 +60,6 @@ const FgEmojiPicker = function(options) {
             const val = e.target.value;
             if (!Array.isArray(this.emojiItems)) {
                 this.emojiItems = Array.from(e.target.closest('.fg-emoji-picker').querySelectorAll('.fg-emoji-picker-all-categories li'));
-                console.log('one');
-                
             }
             this.emojiItems.filter(emoji => {
                 if (!emoji.getAttribute('data-name').match(val)) {
@@ -231,6 +229,7 @@ const FgEmojiPicker = function(options) {
             const picker = document.querySelector('.fg-emoji-picker');
 
             if (!el.closest('.fg-emoji-picker')) picker ? picker.remove() : false;
+            this.emojiItems = undefined
         },
 
 
