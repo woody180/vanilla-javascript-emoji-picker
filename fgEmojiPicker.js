@@ -25,6 +25,9 @@ const FgEmojiPicker = function(options) {
         this.functions.generateStyle();
 
         this.selectors.trigger = this.options.hasOwnProperty('trigger') ? this.options.trigger : console.error('You must proved trigger element like this - \'EmojiPicker.init({trigger: "selector"})\' ');
+        this.selectors.search = '.fg-emoji-picker-search input';
+        this.selectors.emojiContainer = '.fg-emoji-picker-grid'
+        this.emojiItems = undefined;
         this.variable.emit = this.options.emit || null;
         this.variable.position = this.options.position || null;
         this.variable.dir = this.options.dir || '';
@@ -47,9 +50,29 @@ const FgEmojiPicker = function(options) {
         document.body.addEventListener('click', this.functions.removeEmojiPicker.bind(this));
         document.body.addEventListener('click', this.functions.emitEmoji.bind(this));
         document.body.addEventListener('click', this.functions.openEmojiSelector.bind(this), this.selectors.trigger);
+        document.body.addEventListener('input', this.functions.search.bind(this), this.selectors.search);
     }
 
     this.functions = {
+
+        // Search
+        search(e) {
+            const val = e.target.value;
+            if (!Array.isArray(this.emojiItems)) {
+                this.emojiItems = Array.from(e.target.closest('.fg-emoji-picker').querySelectorAll('.fg-emoji-picker-all-categories li'));
+                console.log('one');
+                
+            }
+            this.emojiItems.filter(emoji => {
+                if (!emoji.getAttribute('data-name').match(val)) {
+                    emoji.style.display = 'none'
+                } else {
+                    emoji.style.display = ''
+                }
+            })
+
+            if (!val.length) this.emojiItems = undefined;
+        },
 
         generateStyle() {
             document.head.insertAdjacentHTML('beforeend', `
@@ -128,7 +151,7 @@ const FgEmojiPicker = function(options) {
 
                 /* FILTERS */
                 .fg-emoji-picker-categories {
-        /*            padding: 0 15px;*/
+                    /*padding: 0 15px;*/
                     background: #ececec;
                 }
 
@@ -156,6 +179,34 @@ const FgEmojiPicker = function(options) {
 
                 .fg-emoji-picker-categories a:hover {
                     background-color: #99c9ef;
+                }
+
+                .fg-emoji-picker-search {
+                    position: relative;
+                    height: 25px;
+                }
+
+                .fg-emoji-picker-search input {
+                    position: absolute;
+                    width: 85%;
+                    left: 0;
+                    top: 0;
+                    border: none;
+                    padding: 5px 30px 5px 15px;
+                    outline: none;
+                    background-color: #dedede;
+                    font-size: 12px;
+                    color: #616161;
+                }
+
+                .fg-emoji-picker-search svg {
+                    width: 15px;
+                    height: 15px;
+                    position: absolute;
+                    right: 7px;
+                    top: 5px;
+                    fill: #333333;
+                    pointer-events: none;
                 }
 
 
@@ -317,18 +368,26 @@ const FgEmojiPicker = function(options) {
             'objects':          '<svg width="20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve"> <g><g><path d="M846.5,153.5C939,246.1,990,369.1,990,500c0,130.9-51,253.9-143.5,346.5C753.9,939,630.9,990,500,990c-130.9,0-253.9-51-346.5-143.5C61,753.9,10,630.9,10,500c0-130.9,51-253.9,143.5-346.5C246.1,61,369.1,10,500,10C630.9,10,753.9,61,846.5,153.5z M803.2,803.2c60.3-60.3,100.5-135.5,117-217.3c-12.9,19-25.2,26-32.9-16.5c-7.9-69.3-71.5-25-111.5-49.6c-42.1,28.4-136.8-55.2-120.7,39.1c24.8,42.5,134-56.9,79.6,33.1c-34.7,62.8-126.9,201.9-114.9,274c1.5,105-107.3,21.9-144.8-12.9c-25.2-69.8-8.6-191.8-74.6-225.9c-71.6-3.1-133-9.6-160.8-89.6c-16.7-57.3,17.8-142.5,79.1-155.7c89.8-56.4,121.9,66.1,206.1,68.4c26.2-27.4,97.4-36.1,103.4-66.8c-55.3-9.8,70.1-46.5-5.3-67.4c-41.6,4.9-68.4,43.1-46.3,75.6C496,410.3,493.5,274.8,416,317.6c-2,67.6-126.5,21.9-43.1,8.2c28.7-12.5-46.8-48.8-6-42.2c20-1.1,87.4-24.7,69.2-40.6c37.5-23.3,69.1,55.8,105.8-1.8c26.5-44.3-11.1-52.5-44.4-30c-18.7-21,33.1-66.3,78.8-85.9c15.2-6.5,29.8-10.1,40.9-9.1c23,26.6,65.6,31.2,67.8-3.2c-57-27.3-119.9-41.7-185-41.7c-93.4,0-182.3,29.7-255.8,84.6c19.8,9.1,31,20.3,11.9,34.7c-14.8,44.1-74.8,103.2-127.5,94.9c-27.4,47.2-45.4,99.2-53.1,153.6c44.1,14.6,54.3,43.5,44.8,53.2c-22.5,19.6-36.3,47.4-43.4,77.8C91.3,658,132.6,739,196.8,803.2c81,81,188.6,125.6,303.2,125.6C614.5,928.8,722.2,884.2,803.2,803.2z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></g> </svg>',
             'symbols':          '<svg width="20" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g> <g> <path d="M256,0C161.33,0,84.312,77.018,84.312,171.688c0,54.38,25.587,105.127,68.882,137.502c0,7.915,0,121.305,0,125.043 c0,9.22,7.475,16.696,16.696,16.696h10.168C187.72,485.81,218.85,512,256,512c37.15,0,68.28-26.19,75.943-61.072h10.168 c9.22,0,16.696-7.475,16.696-16.696c0-3.762,0-117.209,0-125.043c43.294-32.375,68.882-83.122,68.882-137.502 C427.688,77.018,350.67,0,256,0z M256,478.609c-18.567,0-34.507-11.461-41.116-27.68h82.233 C290.507,467.148,274.567,478.609,256,478.609z M325.415,417.537c-4.855,0-132.083,0-138.83,0v-39.041h138.83V417.537z M211.096,242.095h-8.057c-4.443,0-8.058-3.615-8.058-8.058s3.615-8.057,8.058-8.057c4.443,0,8.057,3.614,8.057,8.057V242.095z M244.488,345.105v-69.619h23.017v69.619H244.488z M332.824,286.684c-4.63,3.099-7.41,8.303-7.41,13.875v44.545h-24.519v-69.619 h8.058c22.855,0,41.449-18.594,41.449-41.45c0-22.855-18.593-41.449-41.449-41.449c-22.855,0-41.45,18.593-41.45,41.449v8.058 h-23.017v-8.058c0-22.855-18.593-41.449-41.449-41.449c-22.855,0-41.45,18.593-41.45,41.449s18.594,41.45,41.45,41.45h8.057 v69.619h-24.511V300.56c0-5.572-2.779-10.776-7.41-13.875c-38.491-25.759-61.472-68.748-61.472-114.996 c0-76.258,62.039-138.297,138.297-138.297S394.297,95.43,394.297,171.688C394.297,217.937,371.316,260.926,332.824,286.684z M300.896,242.095v-8.058c0-4.443,3.615-8.057,8.058-8.057c4.443,0,8.057,3.614,8.057,8.057s-3.614,8.058-8.057,8.058H300.896z"/> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>',
             'flags':            '<svg width="20" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g id="Page-1" fill="none" fill-rule="evenodd"><g id="037---Waypoint-Flag" fill="rgb(0,0,0)" fill-rule="nonzero" transform="translate(0 -1)"><path id="Shape" d="m59.0752 28.5054c-3.7664123-1.873859-7.2507049-4.2678838-10.3506-7.1118 1.5923634-6.0211307 2.7737841-12.14349669 3.5361-18.3248.1788-1.44-.623-1.9047-.872-2.0126-.7016942-.26712004-1.4944908-.00419148-1.8975.6293-5.4726 6.5479-12.9687 5.8008-20.9053 5.0054-7.9985-.8-16.2506-1.6116-22.3684 5.4114-.85552122-1.067885-2.26533581-1.5228479-3.5837-1.1565l-.1377.0386c-1.81412367.5095218-2.87378593 2.391025-2.3691 4.2065l12.2089 43.6891c.3541969 1.2645215 1.5052141 2.1399137 2.8184 2.1435.2677318-.0003961.5341685-.0371657.792-.1093l1.0683-.2984h.001c.7485787-.2091577 1.3833789-.7071796 1.7646969-1.3844635.381318-.677284.4779045-1.478326.2685031-2.2268365l-3.7812-13.5327c5.5066-7.0807 13.18-6.3309 21.2988-5.52 8.1094.81 16.4863 1.646 22.64-5.7129l.0029-.0039c.6044387-.7534187.8533533-1.7315007.6826-2.6822-.0899994-.4592259-.3932698-.8481635-.8167-1.0474zm-42.0381 29.7446c-.1201754.2157725-.3219209.3742868-.56.44l-1.0684.2983c-.4949157.1376357-1.0078362-.1513714-1.1465-.646l-12.2095-43.6895c-.20840349-.7523825.23089143-1.5316224.9825-1.7428l.1367-.0381c.12366014-.0348192.25153137-.0524183.38-.0523.63429117.0010181 1.19083557.4229483 1.3631 1.0334l.1083.3876v.0021l6.2529 22.3755 5.8468 20.9238c.0669515.2380103.0360256.4929057-.0859.708zm40.6329-27.2925c-5.4736 6.5459-12.9707 5.7974-20.9043 5.0039-7.9033-.79-16.06-1.605-22.1552 5.1558l-5.463-19.548-2.0643-7.3873c5.5068-7.0794 13.1796-6.3119 21.3045-5.5007 7.7148.7695 15.6787 1.5664 21.7373-4.7095-.7467138 5.70010904-1.859683 11.3462228-3.332 16.9033-.1993066.7185155.0267229 1.4878686.583 1.9844 3.1786296 2.9100325 6.7366511 5.3762694 10.5771 7.3315-.0213812.2768572-.1194065.5422977-.2831.7666z"/></g></g></svg>',
+            'search':           '<svg width="20" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 511.999 511.999" style="enable-background:new 0 0 511.999 511.999;" xml:space="preserve"> <g> <g> <path d="M508.874,478.708L360.142,329.976c28.21-34.827,45.191-79.103,45.191-127.309c0-111.75-90.917-202.667-202.667-202.667 S0,90.917,0,202.667s90.917,202.667,202.667,202.667c48.206,0,92.482-16.982,127.309-45.191l148.732,148.732 c4.167,4.165,10.919,4.165,15.086,0l15.081-15.082C513.04,489.627,513.04,482.873,508.874,478.708z M202.667,362.667 c-88.229,0-160-71.771-160-160s71.771-160,160-160s160,71.771,160,160S290.896,362.667,202.667,362.667z"/> </g> </g> <g> </g> <g> </g> <g> </g> <g> </g> </svg>',
         }
 
 
         let picker = `
         <div class="fg-emoji-picker">
-            <div class="fg-emoji-picker-categories">%categories%</div>
+            <div class="fg-emoji-picker-categories">%categories%
+                <div class="fg-emoji-picker-search">
+                    <input placeholder="Search emoji" />
+                    ${categoryIcons.search}
+                </div>
+            </div>
             <div>%pickerContainer%</div>
         </div>`;
 
         let categories = '<ul>%categories%</ul>';
         let categoriesInner = ``;
-        let outerUl = '<div class="fg-emoji-picker-all-categories">%outerUL%</div>';
+        let outerUl = `
+        <div class="fg-emoji-picker-all-categories">%outerUL%</div>
+        `;
         let innerLists = ``;
 
         const fetchData = fetch(`${this.variable.dir}full-emoji-list.json`)
@@ -357,7 +416,7 @@ const FgEmojiPicker = function(options) {
 
                     // Loop through emoji items
                     categories.forEach(item => {
-                        innerLists += `<li><a class="fg-emoji-picker-item" title="${item.description}" data-name="${item.description.toLowerCase()}" data-code="${item.code}" href="${item.emoji}">${item.emoji}</a></li>`;
+                        innerLists += `<li data-name="${item.description.toLowerCase()}"><a class="fg-emoji-picker-item" title="${item.description}" data-name="${item.description.toLowerCase()}" data-code="${item.code}" href="${item.emoji}">${item.emoji}</a></li>`;
                     })
 
                     innerLists += `
