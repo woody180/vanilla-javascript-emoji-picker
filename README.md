@@ -27,12 +27,12 @@ emit() collback returns two argumens. First is emoji it self and second is the t
 
 
 ```
-FgEmojiPicker.init({
-    trigger: 'button', // Using multiple selectors. trigger: ['selector-1', 'selector-2', 'selector-3']
+new FgEmojiPicker({
+    trigger: ['button', 'textarea'],
     position: ['bottom', 'right'],
-    dir: 'directory/to/json', (without json name),
     emit(obj, triggerElement) {
-        console.log(emoji);
+        const emoji = obj.emoji;
+        document.querySelector('textarea').value += emoji;
     }
 });
 ```
