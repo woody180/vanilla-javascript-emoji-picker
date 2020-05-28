@@ -8,10 +8,10 @@
 
 2. Include fgEmojiPicker.js inside the head or body of the project
 
-3. Initialize plugin - FgEmojiPicker.init({trigger: 'selector'})
+3. Initialize plugin - new FgEmojiPicker({trigger: 'selector'})
 
 ```
-FgEmojiPicker.init({
+new FgEmojiPicker({
     trigger: 'selector'
 })
 ```
