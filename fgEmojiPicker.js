@@ -11,44 +11,45 @@ FgEmojiPicker.init({
 });
 */
 
-const FgEmojiPicker = {
-            
-    init() {
+const FgEmojiPicker = function(options) {
+    
+    this.options = options;
+
+    if (!this.options) {
+        return console.error('You must provide object as a first argument')
+    }
+
+    this.init = () => {
 
         // Generate style
         this.functions.generateStyle();
 
-        this.selectors.trigger = arguments[0].trigger || console.error('You must proved trigger element like this - \'EmojiPicker.init({trigger: "selector"})\' ');
-        this.variable.emit = arguments[0].emit || null;
-        this.variable.position = arguments[0].position || null;
-        this.variable.dir = arguments[0].dir || '';
+        this.selectors.trigger = this.options.hasOwnProperty('trigger') ? this.options.trigger : console.error('You must proved trigger element like this - \'EmojiPicker.init({trigger: "selector"})\' ');
+        this.variable.emit = this.options.emit || null;
+        this.variable.position = this.options.position || null;
+        this.variable.dir = this.options.dir || '';
         if (!this.selectors.trigger) return;
 
-        this.catchDOM();
         this.bindEvents();
-    },
+    }
 
-    variable: {
+    this.variable = {
         position: null,
         dir: '',
-    },
+    }
 
-    selectors: {
+    this.selectors = {
         emit: null,
         trigger: null
-    },
+    }
 
-    catchDOM() {
-        // this.trigger = document.querySelectorAll(this.selectors.trigger);
-    },
-
-    bindEvents() {
+    this.bindEvents = () => {
         document.body.addEventListener('click', this.functions.removeEmojiPicker.bind(this));
         document.body.addEventListener('click', this.functions.emitEmoji.bind(this));
         document.body.addEventListener('click', this.functions.openEmojiSelector.bind(this), this.selectors.trigger);
-    },
+    }
 
-    functions: {
+    this.functions = {
 
         generateStyle() {
             document.head.insertAdjacentHTML('beforeend', `
@@ -306,7 +307,7 @@ const FgEmojiPicker = {
 
 
     // Create emoji container / Builder engine
-    emojiPicker() {
+    this.emojiPicker = () => {
 
         let categoryIcons = {
             'smileys--people':  '<svg width="20" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <g> <g> <path d="M437.02,74.98C388.667,26.629,324.38,0,256,0S123.333,26.629,74.98,74.98C26.629,123.333,0,187.62,0,256 s26.629,132.668,74.98,181.02C123.333,485.371,187.62,512,256,512s132.667-26.629,181.02-74.98 C485.371,388.668,512,324.38,512,256S485.371,123.333,437.02,74.98z M256,472c-119.103,0-216-96.897-216-216S136.897,40,256,40 s216,96.897,216,216S375.103,472,256,472z"/> </g> </g> <g> <g> <path d="M368.993,285.776c-0.072,0.214-7.298,21.626-25.02,42.393C321.419,354.599,292.628,368,258.4,368 c-34.475,0-64.195-13.561-88.333-40.303c-18.92-20.962-27.272-42.54-27.33-42.691l-37.475,13.99 c0.42,1.122,10.533,27.792,34.013,54.273C171.022,389.074,212.215,408,258.4,408c46.412,0,86.904-19.076,117.099-55.166 c22.318-26.675,31.165-53.55,31.531-54.681L368.993,285.776z"/> </g> </g> <g> <g> <circle cx="168" cy="180.12" r="32"/> </g> </g> <g> <g> <circle cx="344" cy="180.12" r="32"/> </g> </g> <g> </g> <g> </g> <g> </g> </svg>',
@@ -376,4 +377,6 @@ const FgEmojiPicker = {
         return fetchData;
     }
 
+    this.init();
+    
 }
