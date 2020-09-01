@@ -36,6 +36,27 @@ const FgEmojiPicker = function(options) {
         this.bindEvents();
     }
 
+    this.lib = (el = undefined) => {
+        return {
+            el: document.querySelectorAll(el),
+            on(event, callback, classList = undefined) {
+                if (!classList) {
+                    this.el.forEach(item => {
+                        item.addEventListener(event, callback.bind(item))
+                    })
+                } else {
+                    this.el.forEach(item => {
+                        item.addEventListener(event, (e) => {
+                            if (e.target.closest(classList)) {
+                                callback.call(e.target.closest(classList), e)
+                            }
+                        })
+                    })
+                }
+            }
+        }
+    },
+
     this.variable = {
         position: null,
         dir: '',
@@ -47,10 +68,10 @@ const FgEmojiPicker = function(options) {
     }
 
     this.bindEvents = () => {
-        document.body.addEventListener('click', this.functions.removeEmojiPicker.bind(this));
-        document.body.addEventListener('click', this.functions.emitEmoji.bind(this));
-        document.body.addEventListener('click', this.functions.openEmojiSelector.bind(this), this.selectors.trigger);
-        document.body.addEventListener('input', this.functions.search.bind(this), this.selectors.search);
+        this.lib('body').on('click', this.functions.removeEmojiPicker.bind(this));
+        this.lib('body').on('click', this.functions.emitEmoji.bind(this));
+        this.lib('body').on('click', this.functions.openEmojiSelector.bind(this), this.selectors.trigger);
+        this.lib('body').on('input', this.functions.search.bind(this), this.selectors.search);
     }
 
     this.functions = {
