@@ -49,6 +49,7 @@
         new FgEmojiPicker({
             trigger: ['button', 'textarea'],
             position: ['bottom', 'right'],
+            preFetch: true,
             emit(obj, triggerElement) {
                 const emoji = obj.emoji;
                 document.querySelector('textarea').value += emoji;
