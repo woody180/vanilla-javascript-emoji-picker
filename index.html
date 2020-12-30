@@ -47,12 +47,12 @@
     <script src="fgEmojiPicker.js"></script>
     <script>
         new FgEmojiPicker({
-            trigger: ['button', 'textarea'],
+            trigger: ['button'],
             position: ['bottom', 'right'],
             preFetch: true,
+            insertInto: document.querySelector('textarea'),
             emit(obj, triggerElement) {
-                const emoji = obj.emoji;
-                document.querySelector('textarea').value += emoji;
+                console.log(obj, triggerElement);
             }
         });
     </script>

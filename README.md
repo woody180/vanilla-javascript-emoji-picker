@@ -22,20 +22,20 @@ new FgEmojiPicker({
 *  position: ['top', 'left', 'right', 'bottom']
 *  dir: 'directory/to/json', (without json name)
 *  preFetch: true, // load emoji json when function called 
+*  insertInto: document.querySelector('textarea'), // Takes element (textarea for example) where emoji going to be inserted
 *  emit: (emoji, triggerElement) {console.log(emoji)}
 
 emit() collback returns two argumens. First is emoji it self and second is the trigger element.
 
 
 ```
-new FgEmojiPicker({
-    trigger: ['button', 'textarea'],
+ new FgEmojiPicker({
+    trigger: ['button'],
     position: ['bottom', 'right'],
     preFetch: true,
-    dir: `../js/`,
+    insertInto: document.querySelector('textarea'),
     emit(obj, triggerElement) {
-        const emoji = obj.emoji;
-        document.querySelector('textarea').value += emoji;
+        console.log(obj, triggerElement);
     }
 });
 ```
