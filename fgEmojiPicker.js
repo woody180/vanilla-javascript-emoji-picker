@@ -76,6 +76,7 @@ const FgEmojiPicker = function (options) {
         this.lib('body').on('click', this.functions.emitEmoji.bind(this));
         this.lib('body').on('click', this.functions.openEmojiSelector.bind(this), this.selectors.trigger);
         this.lib('body').on('input', this.functions.search.bind(this), this.selectors.search);
+        this.lib('body').on('keydown', this.functions.removeEmojiPicker.bind(this));
     }
 
     this.functions = {
