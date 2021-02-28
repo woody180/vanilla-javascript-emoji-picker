@@ -414,9 +414,8 @@ const FgEmojiPicker = function (options) {
                 if (typeof this.variable.emit === 'function') this.triggerer = el
 
                 // Insert picker
-                document.body.insertAdjacentHTML('afterbegin', this.html.pickerBody.apply(this));
-
-                const emojiPickerMain   = document.querySelector('.fg-emoji-picker');
+                const emojiPickerMain = new DOMParser().parseFromString(this.html.pickerBody.apply(this), 'text/html').body.firstElementChild;
+                document.body.insertAdjacentElement('afterbegin', emojiPickerMain);
 
                 let positions = {
                     buttonTop: e.pageY,
