@@ -581,7 +581,7 @@ const FgEmojiPicker = function (options) {
                                 let keyToId = key.split(' ').join('-').split('&').join('').toLowerCase();
 
                                 const categories = object[key];
-                                categoriesInner += `<li class="${index === 1 ? 'active' : ''}" id="${keyToId}" data-index="${keyToId}"><a href="#${keyToId}">${this.categoryIcons[keyToId]}</a></li>`
+                                categoriesInner += `<li class="${index === 1 ? 'active' : ''}" id="${keyToId}" data-index="${keyToId}"><a href="#${keyToId}">${this.variable.categoryIcons[keyToId]}</a></li>`
 
                                 innerLists += `
                                 <ul class="fg-emoji-picker-category ${index === 1 ? 'active' : ''}" id="${keyToId}" category-name="${key}">
