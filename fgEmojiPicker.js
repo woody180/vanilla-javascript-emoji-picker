@@ -466,6 +466,8 @@ const FgEmojiPicker = function (options) {
                     const emojiBody         = emojiPickerMain.querySelector('.fg-emoji-picker-all-categories')
                     const emojiPickerHeader = emojiPickerMain.querySelector('.fg-emoji-picker-categories');
 
+                    emojiPickerMain.querySelector('input').focus();
+
                     // Add event listener on click
                     document.body.querySelector('.fg-emoji-picker').onclick = function (e) {
 
@@ -513,7 +515,7 @@ const FgEmojiPicker = function (options) {
         <div class="fg-emoji-picker">
             <div class="fg-emoji-picker-categories">%categories%
                 <div class="fg-emoji-picker-search">
-                    <input placeholder="Search emoji" />
+                    <input placeholder="Search emoji" autofocus />
                     ${this.variable.categoryIcons.search}
                 </div>
             </div>
