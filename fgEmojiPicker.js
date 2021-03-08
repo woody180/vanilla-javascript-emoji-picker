@@ -87,6 +87,15 @@ const FgEmojiPicker = function (options) {
         this.lib('body').on('click', this.functions.openEmojiSelector.bind(this), this.selectors.trigger);
         this.lib('body').on('input', this.functions.search.bind(this), this.selectors.search);
         this.lib('body').on('keydown', this.functions.removeEmojiPicker.bind(this));
+        window.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                if (document.querySelector('.fg-emoji-picker')) {
+                    document.querySelectorAll('.fg-emoji-picker').forEach(emoji => emoji.remove())
+                    this.emojiItems = undefined
+                }
+            }
+
+        })
     }
 
     this.html = {
@@ -368,8 +377,8 @@ const FgEmojiPicker = function (options) {
             </style>`)
         },
 
-        removeEmojiPicker(e) {
-            const el = e.target;
+        removeEmojiPicker() {
+            const el = window.event.target;
             const picker = document.querySelector('.fg-emoji-picker');
 
             if (!el.closest('.fg-emoji-picker')) picker ? picker.remove() : false;
