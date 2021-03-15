@@ -26,10 +26,11 @@ new FgEmojiPicker({
 *  emit: (emoji, triggerElement) {console.log(emoji)}
 
 emit() collback returns two argumens. First is emoji it self and second is the trigger element.
+* You can close picker by clicking to the blank screen space, however you can remove picker with public 'destroy method' ``` picker.destroy() ```
 
 
 ```
- new FgEmojiPicker({
+const picker = new FgEmojiPicker({
     trigger: ['button'],
     position: ['bottom', 'right'],
     preFetch: true,

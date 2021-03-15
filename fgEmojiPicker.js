@@ -124,6 +124,7 @@ const FgEmojiPicker = function (options) {
     this.destroy = () => {
         document.querySelectorAll(this.selectors.emojiPicker).forEach(p => p.remove())
         this.emojiItems = undefined;
+        return true;
     }
 
     this.functions = {
