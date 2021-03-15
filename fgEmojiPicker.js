@@ -127,6 +127,24 @@ const FgEmojiPicker = function (options) {
         return true;
     }
 
+    setCaretPosition = (field, caretPos) => {
+		var elem = field
+		if (elem != null) {
+			if (elem.createTextRange) {
+				var range = elem.createTextRange();
+				range.move('character', caretPos);
+				range.select();
+			} else {
+				if (elem.selectionStart) {
+					elem.focus();
+					elem.setSelectionRange(caretPos, caretPos);
+				} else {
+					elem.focus();
+                }
+			}
+		}
+	}
+
     this.functions = {
 
         // Put in place 
@@ -139,7 +157,9 @@ const FgEmojiPicker = function (options) {
                 const startPos = myField.selectionStart;
                 const endPos = myField.selectionEnd;
                 myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-                myField.focus()
+                
+                setCaretPosition(myField, startPos + 1)
+                
             } else {
                 myField.value += myValue;
                 myField.focus()
