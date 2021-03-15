@@ -24,7 +24,7 @@ const FgEmojiPicker = function (options) {
     this.init = () => {
 
         // Generate style
-        this.functions.generateStyle();
+        this.functions.generateStyle.call(this);
 
         this.selectors.trigger = this.options.hasOwnProperty('trigger') ? this.options.trigger : console.error('You must proved trigger element like this - \'EmojiPicker.init({trigger: "selector"})\' ');
         this.selectors.search = '.fg-emoji-picker-search input';
@@ -78,7 +78,11 @@ const FgEmojiPicker = function (options) {
 
     this.selectors = {
         emit: null,
-        trigger: null
+        trigger: null,
+        emojiPicker: '.fg-emoji-picker',
+        emojiFooter: '.fg-emoji-picker-footer',
+        emojiBody: '.fg-emoji-picker-all-categories',
+        emojiHeader: '.fg-emoji-picker-categories'
     }
 
     this.bindEvents = () => {
@@ -89,8 +93,8 @@ const FgEmojiPicker = function (options) {
         this.lib('body').on('keydown', this.functions.removeEmojiPicker.bind(this));
         window.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
-                if (document.querySelector('.fg-emoji-picker')) {
-                    document.querySelectorAll('.fg-emoji-picker').forEach(emoji => emoji.remove())
+                if (document.querySelector(this.selectors.emojiPicker)) {
+                    document.querySelectorAll(this.selectors.emojiPicker).forEach(emoji => emoji.remove())
                     this.emojiItems = undefined
                 }
             }
@@ -138,7 +142,7 @@ const FgEmojiPicker = function (options) {
         search(e) {
             const val = e.target.value;
             if (!Array.isArray(this.emojiItems)) {
-                this.emojiItems = Array.from(e.target.closest('.fg-emoji-picker').querySelectorAll('.fg-emoji-picker-all-categories li'));
+                this.emojiItems = Array.from(e.target.closest(this.selectors.emojiPicker).querySelectorAll(`${this.selectors.emojiBody} li`));
             }
             this.emojiItems.filter(emoji => {
                 if (!emoji.getAttribute('data-name').match(val)) {
@@ -217,7 +221,7 @@ const FgEmojiPicker = function (options) {
                   }
 
 
-                .fg-emoji-picker {
+                ${this.selectors.emojiPicker} {
                     /* position: fixed; */
                     position: absolute;
                     z-index: 999;
@@ -229,18 +233,18 @@ const FgEmojiPicker = function (options) {
                     overflow: hidden;
                 }
 
-                .fg-emoji-picker .fg-emoji-picker-all-categories {
+                ${this.selectors.emojiPicker} ${this.selectors.emojiBody} {
                     height: 301px;
                     overflow-y: auto;
                     padding: 0 15px 15px 15px;
                 }
 
-                .fg-emoji-picker .fg-emoji-picker-container-title {
+                ${this.selectors.emojiPicker} .fg-emoji-picker-container-title {
                     color: black;
                     margin: 10px 0;
                 }
 
-                .fg-emoji-picker * {
+                ${this.selectors.emojiPicker} * {
                     margin: 0;
                     padding: 0;
                     text-decoration: none;
@@ -248,13 +252,13 @@ const FgEmojiPicker = function (options) {
                     font-family: sans-serif;
                 }
 
-                .fg-emoji-picker ul {
+                ${this.selectors.emojiPicker} ul {
                     list-style: none;
                     margin: 0;
                     padding: 0;
                 }
 
-                .fg-emoji-picker .fg-emoji-picker-category {
+                ${this.selectors.emojiPicker} .fg-emoji-picker-category {
                     margin-top: 1px;
                     padding-top: 15px;
                 }
@@ -379,9 +383,9 @@ const FgEmojiPicker = function (options) {
 
         removeEmojiPicker() {
             const el = window.event.target;
-            const picker = document.querySelector('.fg-emoji-picker');
+            const picker = document.querySelector(this.selectors.emojiPicker);
 
-            if (!el.closest('.fg-emoji-picker')) picker ? picker.remove() : false;
+            if (!el.closest(this.selectors.emojiPicker)) picker ? picker.remove() : false;
             this.emojiItems = undefined
         },
 
@@ -402,7 +406,7 @@ const FgEmojiPicker = function (options) {
                 // If insert into option exists
                 if (this.insertInto) this.functions.putInPlace(this.insertInto, emoji.emoji)
 
-                const picker = document.querySelector('.fg-emoji-picker');
+                const picker = document.querySelector(this.selectors.emojiPicker);
                 picker.remove();
             }
 
@@ -471,14 +475,14 @@ const FgEmojiPicker = function (options) {
                     
                     emojiPickerMain.innerHTML = node.innerHTML;
 
-                    const emojiFooter       = emojiPickerMain.querySelector('.fg-emoji-picker-footer');
-                    const emojiBody         = emojiPickerMain.querySelector('.fg-emoji-picker-all-categories')
-                    const emojiPickerHeader = emojiPickerMain.querySelector('.fg-emoji-picker-categories');
+                    const emojiFooter       = emojiPickerMain.querySelector(this.selectors.emojiFooter);
+                    const emojiBody         = emojiPickerMain.querySelector(this.selectors.emojiBody)
+                    const emojiPickerHeader = emojiPickerMain.querySelector(this.selectors.emojiHeader);
 
                     emojiPickerMain.querySelector('input').focus();
 
                     // Add event listener on click
-                    document.body.querySelector('.fg-emoji-picker').onclick = function (e) {
+                    document.body.querySelector(this.selectors.emojiPicker).onclick = function (e) {
 
                         e.preventDefault();
 
