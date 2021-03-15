@@ -139,8 +139,10 @@ const FgEmojiPicker = function (options) {
                 const startPos = myField.selectionStart;
                 const endPos = myField.selectionEnd;
                 myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+                myField.focus()
             } else {
                 myField.value += myValue;
+                myField.focus()
             }
         },
 
