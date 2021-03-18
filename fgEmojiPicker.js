@@ -158,7 +158,7 @@ const FgEmojiPicker = function (options) {
                 const endPos = myField.selectionEnd;
                 myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
                 
-                setCaretPosition(myField, startPos + 1)
+                setCaretPosition(myField, startPos + 2)
                 
             } else {
                 myField.value += myValue;
