@@ -2,6 +2,11 @@
 
 ![](emoji-picker-thumb.jpg)
 
+## Install with NPM
+```
+npm i fg-emoji-picker
+```
+
 ## Installation & Usage
 
 1. Put fgEmojiPicker.js file along with full-emoji-list.json.
