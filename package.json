@@ -1,7 +1,7 @@
 {
-  "name": "vanilla-javascript-emoji-picker",
+  "name": "fg-emoji-picker",
   "version": "1.0.0",
-  "description": "![](emoji-picker-thumb.jpg)",
+  "description": "Vanilla javascript emoji picker",
   "main": "fgEmojiPicker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
