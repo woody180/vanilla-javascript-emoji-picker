@@ -37,9 +37,10 @@ emit() collback returns two argumens. First is emoji it self and second is the t
 
 
 ```
-const picker = new FgEmojiPicker({
-    // dir: './node_modules/fg-emoji-picker/',
+ const emojiPicker = new FgEmojiPicker({
     trigger: ['button'],
+    removeOnSelection: false,
+    closeButton: true,
     position: ['bottom', 'right'],
     preFetch: true,
     insertInto: document.querySelector('textarea'),
