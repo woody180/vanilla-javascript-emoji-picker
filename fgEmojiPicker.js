@@ -31,6 +31,7 @@ const FgEmojiPicker = function (options) {
         this.selectors.emojiContainer = '.fg-emoji-picker-grid'
         this.emojiItems = undefined;
         this.variable.emit = this.options.emit || null;
+        this.variable.removeOnSelection = this.options.removeOnSelection || false;
         this.variable.position = this.options.position || null;
         this.variable.dir = this.options.dir || '';
         this.insertInto = this.options.insertInto || undefined;
@@ -90,7 +91,7 @@ const FgEmojiPicker = function (options) {
         this.lib('body').on('click', this.functions.emitEmoji.bind(this));
         this.lib('body').on('click', this.functions.openEmojiSelector.bind(this), this.selectors.trigger);
         this.lib('body').on('input', this.functions.search.bind(this), this.selectors.search);
-        this.lib('body').on('keydown', this.functions.removeEmojiPicker.bind(this));
+        //this.lib('body').on('keydown', this.functions.removeEmojiPicker.bind(this));
         window.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
                 if (document.querySelector(this.selectors.emojiPicker)) {
@@ -434,8 +435,10 @@ const FgEmojiPicker = function (options) {
                 // If insert into option exists
                 if (this.insertInto) this.functions.putInPlace(this.insertInto, emoji.emoji)
 
-                const picker = document.querySelector(this.selectors.emojiPicker);
-                picker.remove();
+                if (this.variable.removeOnSelection) {
+                    const picker = document.querySelector(this.selectors.emojiPicker);
+                    picker.remove();
+                }
             }
 
         },
