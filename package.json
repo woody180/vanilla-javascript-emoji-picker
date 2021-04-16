@@ -1,6 +1,6 @@
 {
   "name": "fg-emoji-picker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Vanilla javascript emoji picker",
   "main": "fgEmojiPicker.js",
   "scripts": {
