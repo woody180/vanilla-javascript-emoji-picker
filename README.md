@@ -1,51 +1,37 @@
 # Emoji picker created with vanilla javascript
+This is the simplest to use emoji picker built with vanilla javascript.
 
-![](emoji-picker-thumb.jpg)
+![](./screenshot.png "Vanilla Javascript Emoji Picker")
 
-## Install with NPM
-```
-npm i fg-emoji-picker
-```
+## Benefit of it is - Benefit of it is:
 
-## Installation & Usage
+- It is only one .js file without css or other files
+- There is no jQuery or other libraries
+- Simplicity of usage
+- Multiple textareas and triggers
+- Draggable emoji picker container
 
-1. Put fgEmojiPicker.js file along with full-emoji-list.json.
+## Initialize
 
-2. Include fgEmojiPicker.js inside the head or body of the project
-
-3. Initialize plugin - new FgEmojiPicker({trigger: 'selector'})
-
-```
-new FgEmojiPicker({
-    trigger: 'selector'
-})
-```
+Initialze plugin with ```new EmojiPicker({});```
 
 ## Options
 
-*  trigger: 'selector'. Multiple selectors also available. Just put selectors in array - trigger: ['selector-1', 'selector-2', 'selector-3']
-*  position: ['top', 'left', 'right', 'bottom']
-*  dir: 'directory/to/json', // (without json name)
-*  removeOnSelection: true, // Hide / remove emoji picker on emoji click
-*  closeButton: true,
-*  preFetch: true, // load emoji json when function called 
-*  insertInto: document.querySelector('textarea'), // Takes element (textarea for example) where emoji going to be inserted
-*  emit: (emoji, triggerElement) {console.log(emoji)}
-
-emit() collback returns two argumens. First is emoji it self and second is the trigger element.
-* You can close picker by clicking to the blank screen space, however you can remove picker with public 'destroy method' ``` picker.destroy() ```
-
+- Trigger - must be an array of objects. Inside object there are two properties. First is selector, and second - **insertInto** method to define where emoji going to be inserted. If there are multiple 'textarea's - you can provide array of selectors as well. Watch example below.
+- Close button - **closeButton** method can be true of false depending on whether you want close button on emoji picker or n
 
 ```
- const emojiPicker = new FgEmojiPicker({
-    trigger: ['button'],
-    removeOnSelection: false,
-    closeButton: true,
-    position: ['bottom', 'right'],
-    preFetch: true,
-    insertInto: document.querySelector('textarea'),
-    emit(obj, triggerElement) {
-        console.log(obj, triggerElement);
-    }
+new EmojiPicker({
+    trigger: [
+        {
+            selector: '.first-btn',
+            insertInto: ['.one', '.two'] // If there is only one '.selector', than it can be used without array
+        },
+        {
+            selector: '.second-btn',
+            insertInto: '.two'
+        }
+    ],
+    closeButton: true
 });
 ```
