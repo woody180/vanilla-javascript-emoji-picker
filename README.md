@@ -18,7 +18,8 @@ Initialze plugin with ```new EmojiPicker({});```
 ## Options
 
 - Trigger - must be an array of objects. Inside object there are two properties. First is selector, and second - **insertInto** method to define where emoji going to be inserted. If there are multiple 'textarea's - you can provide array of selectors as well. Watch example below.
-- Close button - **closeButton** method can be true of false depending on whether you want close button on emoji picker or n
+- Close button - **closeButton** method can be true of false depending on whether you want close button on emoji picker or not.
+- specialButtons - takes color code to change special (move and close) button colors.
 
 ```
 new EmojiPicker({
@@ -32,6 +33,7 @@ new EmojiPicker({
             insertInto: '.two'
         }
     ],
-    closeButton: true
+    closeButton: true,
+    specialButtons: 'green' // #008000, rgba(0, 128, 0);
 });
 ```

@@ -7602,7 +7602,11 @@ const EmojiPicker = function(options) {
                     }
 
                     .fg-picker-special-buttons a {
-                        background-color: #85868b;
+                        background-color: ${this.options.specialButtons ? this.options.specialButtons : '#ed5e28'};
+                    }
+
+                    .fg-picker-special-buttons:last-child a {
+                        box-shadow: inset 1px 0px 0px 0 rgba(0, 0, 0, 0.11);
                     }
 
                     .fg-emoji-list {
