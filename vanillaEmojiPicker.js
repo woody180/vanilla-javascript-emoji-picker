@@ -7,6 +7,8 @@ const EmojiPicker = function(options) {
     let categoriesHTML = '';
     let emojiList = undefined;
     let moseMove = false;
+    const pickerWidth = this.options.closeButton ? 370 : 350;
+    const pickerHeight = 400;
 
     this.lib = function(el = undefined) {
 
@@ -7519,8 +7521,8 @@ const EmojiPicker = function(options) {
                         position: fixed;
                         top: 0;
                         left: 0;
-                        width: 350px;
-                        height: 400px;
+                        width: ${pickerWidth}px;
+                        height: ${pickerHeight}px;
                         border-radius: 5px;
                         box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.62);
                         background-color: white;
@@ -7699,6 +7701,15 @@ const EmojiPicker = function(options) {
 
         },
 
+
+        rePositioning: (picker) => {
+            picker.getBoundingClientRect().right > window.screen.availWidth ? picker.style.left = window.screen.availWidth - picker.offsetWidth + 'px' : false;
+            
+            if (window.innerHeight > pickerHeight) {
+                picker.getBoundingClientRect().bottom > window.innerHeight ? picker.style.top = window.innerHeight - picker.offsetHeight + 'px' : false;
+            }
+        },
+
         
         render: (e, attr) => {
 
@@ -7739,7 +7750,7 @@ const EmojiPicker = function(options) {
 
 
             const picker = `
-                <div class="fg-emoji-container" style="left: ${position.left}px; top: ${position.top}px; ${this.options.closeButton ? `width: 370px;` : ''}">
+                <div class="fg-emoji-container" style="left: ${position.left}px; top: ${position.top}px;">
                     <nav class="fg-emoji-nav">
                         <ul>
                             ${categoriesHTML}
@@ -7772,6 +7783,8 @@ const EmojiPicker = function(options) {
             `;
 
             document.body.insertAdjacentHTML('beforeend', picker);
+
+            functions.rePositioning(document.querySelector('.fg-emoji-container'));
 
             setTimeout(() => {
                 document.querySelector('.fg-emoji-picker-search input').focus();
