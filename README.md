@@ -3,7 +3,7 @@ This is the simplest to use emoji picker built with vanilla javascript.
 
 ![](./screenshot.png "Vanilla Javascript Emoji Picker")
 
-## Benefit of it is:
+## Benefits:
 
 - It is only one .js file without css or other files
 - There is no jQuery or other libraries
