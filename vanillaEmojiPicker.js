@@ -7910,9 +7910,8 @@ const EmojiPicker = function(options) {
 
         mouseMove: e => {
 
-            e.preventDefault();
-
             if (moseMove) {
+                e.preventDefault();
                 const el = document.querySelector('.fg-emoji-container');
                 el.style.left = e.clientX - 320 + 'px';
                 el.style.top = e.clientY - 10 + 'px';
