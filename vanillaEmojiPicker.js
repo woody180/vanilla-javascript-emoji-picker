@@ -7,8 +7,8 @@ const EmojiPicker = function(options) {
     let categoriesHTML = '';
     let emojiList = undefined;
     let moseMove = false;
-    const pickerWidth = this.options.closeButton ? 370 : 350;
-    const pickerHeight = 400;
+    const pickerWidth =  this.options.closeButton ? 370 : 350;
+    const pickerHeight =  400;
 
     this.lib = function(el = undefined) {
 
@@ -7517,6 +7517,13 @@ const EmojiPicker = function(options) {
 
             const styles = `
                 <style>
+                    :root {
+                        --icon-background: ${this.options.darkMode ? '#18191a' : '#ffffff'};
+                        --icon-hover: ${this.options.darkMode ? "rgba(255,255,255,0.5)" : "ebebeb"};
+                        --text-color: ${this.options.darkMode ? "#fff" : "#666"};
+                        --border-color: ${this.options.darkMode ? "#fff" : "#ededed"};
+                        --search-background: ${this.options.darkMode ? "#444" : "#f3f3f3"};
+                    }
                     .fg-emoji-container {
                         position: fixed;
                         top: 0;
@@ -7545,7 +7552,7 @@ const EmojiPicker = function(options) {
                         font-family: sans-serif;
                         font-weight: bold;
                         flex: 0 0 calc(100% - 20px);
-                        border-bottom: 1px solid #ededed;
+                        border-bottom: 1px solid var(--border-color);
                     }
 
                     .fg-emoji-nav {
@@ -7624,6 +7631,8 @@ const EmojiPicker = function(options) {
                         display: flex;
                         flex-wrap: wrap;
                         flex: 1;
+                        background-color: var(--icon-background);
+                        color: var(--text-color)
                     }
 
                     .fg-emoji-list li {
@@ -7634,6 +7643,7 @@ const EmojiPicker = function(options) {
                         align-items: center;
                         flex: 0 0 calc(100% / 6);
                         height: 50px;
+                        background-color: var(--icon-background);
                     }
 
                     .fg-emoji-list li a {
@@ -7646,13 +7656,13 @@ const EmojiPicker = function(options) {
                         justify-content: center;
                         align-items: center;
                         font-size: 23px;
-                        background-color: #ffffff;
+                        background-color: var(--icon-background);
                         border-radius: 3px;
                         transition: all .3s ease;
                     }
                     
                     .fg-emoji-list li a:hover {
-                        background-color: #ebebeb;
+                        background-color: var(--icon-hover);
                     }
 
                     .fg-emoji-picker-search {
@@ -7662,11 +7672,12 @@ const EmojiPicker = function(options) {
                     .fg-emoji-picker-search input {
                         border: none;
                         box-shadow: 0 0 0 0;
-                        outline: none;
+                        outline: none !important;
                         width: calc(100% - 30px);
                         display: block;
                         padding: 10px 15px;
-                        background-color: #f3f3f3;
+                        background-color: var(--search-background);
+                        color: var(--text-color)
                     }
 
                     .fg-emoji-picker-search .fg-emoji-picker-search-icon {
@@ -7687,15 +7698,16 @@ const EmojiPicker = function(options) {
         },
 
 
-        position: () => {
+        position: (btn) => {
 
-            const e             = window.event;
-            const clickPosX     = e.clientX;
-            const clickPosY     = e.clientY;
+            const clickPosX     = document.querySelector(btn).getBoundingClientRect().left + this.options.addPosX;
+            const clickPosY     = document.querySelector(btn).getBoundingClientRect().top + this.options.addPosY;
+
             const obj           = {};
 
             obj.left            = clickPosX;
             obj.top             = clickPosY;
+
 
             return obj;
 
@@ -7718,7 +7730,7 @@ const EmojiPicker = function(options) {
             const index = this.options.trigger.findIndex(item => item.selector === attr);
             this.insertInto = this.options.trigger[index].insertInto;
 
-            const position = functions.position();
+            const position = functions.position(attr);
 
             if (!emojiesHTML.length) {
 
@@ -7754,8 +7766,7 @@ const EmojiPicker = function(options) {
                     <nav class="fg-emoji-nav">
                         <ul>
                             ${categoriesHTML}
-
-                            <li class="fg-picker-special-buttons" id="fg-emoji-picker-move"><a class="fg-emoji-picker-move" href="#">${icons.move}</a></li>
+                            ${this.options.dragButton ? `<li class="fg-picker-special-buttons" id="fg-emoji-picker-move"><a class="fg-emoji-picker-move" href="#">${icons.move}</a></li>` : ''}
                             ${this.options.closeButton ? `<li class="fg-picker-special-buttons"><a id="fg-emoji-picker-close-button" href="#">`+icons.close+`</a></li>` : ''}
                         </ul>
                     </nav>
@@ -7945,4 +7956,5 @@ const EmojiPicker = function(options) {
         bindEvents.call(this);
         
     })()
+
 }
