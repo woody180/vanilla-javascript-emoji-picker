@@ -30,7 +30,7 @@ new EmojiPicker({
     trigger: [
         {
             selector: '.first-btn',
-            insertInto: ['.one', '.two'] // '.selector' can be used without array
+            insertInto: ['.one', '.two'] //If there is only one '.selector', than it can be used without array
         },
         {
             selector: '.second-btn',
