@@ -7857,6 +7857,11 @@ const EmojiPicker = function(options) {
                     myField.focus()
                 }
 
+                myField.dispatchEvent(new InputEvent('input'));
+                if (this.options.closeOnSelect) {
+                    functions.closePicker.call(this, e);
+                }
+
             })
         },
 
