@@ -7691,7 +7691,7 @@ const EmojiPicker = function(options) {
 
             const e             = window.event;
             const clickPosX     = e.clientX;
-            const clickPosY     = e.clientY;
+            const clickPosY     = e.clientY + document.documentElement.scrollTop;
             const obj           = {};
 
             obj.left            = clickPosX;
@@ -7706,7 +7706,7 @@ const EmojiPicker = function(options) {
             picker.getBoundingClientRect().right > window.screen.availWidth ? picker.style.left = window.screen.availWidth - picker.offsetWidth + 'px' : false;
             
             if (window.innerHeight > pickerHeight) {
-                picker.getBoundingClientRect().bottom > window.innerHeight ? picker.style.top = window.innerHeight - picker.offsetHeight + 'px' : false;
+                picker.getBoundingClientRect().bottom > window.innerHeight ? picker.style.top = (window.innerHeight + document.documentElement.scrollTop) - picker.offsetHeight + 'px' : false;
             }
         },
 
