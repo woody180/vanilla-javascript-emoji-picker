@@ -7521,7 +7521,7 @@ const EmojiPicker = function(options) {
                         position: fixed;
                         top: 0;
                         left: 0;
-                        width: 95vw;
+                        width: 100vw;
                         max-width: ${pickerWidth}px;
                         height: ${pickerHeight}px;
                         border-radius: 5px;
