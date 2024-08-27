@@ -7603,6 +7603,11 @@ const EmojiPicker = function(options) {
                         /* pointer-events: none; */
                         cursor: move;
                     }
+                    @media only screen and (max-width:400px) {
+                      #fg-emoji-picker-move {
+                        display: none;
+                      }
+                    }
 
                     .fg-picker-special-buttons a {
                         background-color: ${this.options.specialButtons ? this.options.specialButtons : '#ed5e28'};
