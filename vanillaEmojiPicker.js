@@ -9,6 +9,9 @@ const EmojiPicker = function(options) {
     let moseMove = false;
     const pickerWidth = this.options.closeButton ? 370 : 350;
     const pickerHeight = 400;
+    let offsetX, offsetY;
+    let isDragging = false;
+    let fgContainer = undefined;
 
     this.lib = function(el = undefined) {
 
@@ -7687,9 +7690,8 @@ const EmojiPicker = function(options) {
         },
 
 
-        position: () => {
+        position: e => {
 
-            const e             = window.event;
             const clickPosX     = e.clientX;
             const clickPosY     = e.clientY;
             const obj           = {};
@@ -7718,7 +7720,7 @@ const EmojiPicker = function(options) {
             const index = this.options.trigger.findIndex(item => item.selector === attr);
             this.insertInto = this.options.trigger[index].insertInto;
 
-            const position = functions.position();
+            const position = functions.position(e);
 
             if (!emojiesHTML.length) {
 
@@ -7908,19 +7910,43 @@ const EmojiPicker = function(options) {
             moseMove = true;
         },
 
-        mouseUp: e => {
+        startDrag: e => {
+
             e.preventDefault();
-            moseMove = false;
+
+            isDragging = true;
+            
+            if (!fgContainer) fgContainer = document.querySelector('.fg-emoji-container');
+
+            const clientX = e.clientX || e.touches[0].clientX;
+            const clientY = e.clientY || e.touches[0].clientY;
+
+            offsetX = clientX - fgContainer.getBoundingClientRect().left;
+            offsetY = clientY - fgContainer.getBoundingClientRect().top;
+
+            document.addEventListener('mousemove', functions.onMouseMove);
+            document.addEventListener('touchmove', functions.onMouseMove);
+            document.addEventListener('mouseup', functions.stopDrag);
+            document.addEventListener('touchend', functions.stopDrag);
+
         },
 
-        mouseMove: e => {
-
-            if (moseMove) {
-                e.preventDefault();
-                const el = document.querySelector('.fg-emoji-container');
-                el.style.left = e.clientX - 320 + 'px';
-                el.style.top = e.clientY - 10 + 'px';
+        onMouseMove: e => {
+            if (isDragging) {
+                const clientX = e.clientX || e.touches[0].clientX;
+                const clientY = e.clientY || e.touches[0].clientY;
+                fgContainer.style.left = clientX - offsetX + 'px';
+                fgContainer.style.top = clientY - offsetY + 'px';
             }
+        },
+
+        stopDrag: () => {
+            isDragging = false;
+            fgContainer = undefined;
+            document.removeEventListener('mousemove', functions.onMouseMove);
+            document.removeEventListener('touchmove', functions.onMouseMove);
+            document.removeEventListener('mouseup', functions.stopDrag);
+            document.removeEventListener('touchend', functions.stopDrag);
         }
     };
 
@@ -7934,9 +7960,8 @@ const EmojiPicker = function(options) {
         this.lib(document.body).on('click', functions.insert, '.fg-emoji-list a');
         this.lib(document.body).on('click', functions.categoryNav, '.fg-emoji-nav a');
         this.lib(document.body).on('input', functions.search, '.fg-emoji-picker-search input');
-        this.lib(document).on('mousedown', functions.mouseDown, '#fg-emoji-picker-move');
-        this.lib(document).on('mouseup', functions.mouseUp, '#fg-emoji-picker-move');
-        this.lib(document).on('mousemove', functions.mouseMove);
+        this.lib('body').on('mousedown', functions.startDrag, '#fg-emoji-picker-move');
+        this.lib('body').on('touchstart', functions.startDrag, '#fg-emoji-picker-move');
     };
 
     
